@@ -4,6 +4,14 @@ A script that scan for new posts in Path of Exile forum thread and post it to di
 
 Only monitor ONE thread per program.
 
+
+## Sample Output
+
+![sample output](/readme/sample.png)
+
+[Forum Thread](https://www.pathofexile.com/forum/view-thread/3187997/page/8)
+
+
 ## How to Use
 
 1. Git pull this repo
