@@ -33,7 +33,7 @@ if DISCORD_WEBHOOK_ID is None or DISCORD_WEBHOOK_HASH is None or FORUM_THREAD_ID
 # constants
 #
 
-POE_URL = 'https://www.pathofexile.com'
+# POE_URL = 'https://www.pathofexile.com'
 POE_FORUM_URL = 'https://www.pathofexile.com/forum/view-thread/'
 WEBHOOK_URL = f'https://discord.com/api/webhooks/{DISCORD_WEBHOOK_ID}/{DISCORD_WEBHOOK_HASH}'
 HTTP_HEADERS = { 'User-Agent': 'tojurnru:poe-forum-scraper-bot' }
@@ -87,12 +87,13 @@ def process_page(soup, current_page, last_post_id):
 
         # get user data
         date = post_info.select('.post_date')[0].get_text() # initial format: Oct 16, 2021, 6:48:05 PM
-        date_utc = datetime.strptime(date, '%b %d, %Y, %I:%M:%S %p').astimezone(timezone.utc)
-        str_date_utc = datetime.strftime(date_utc, '%Y-%m-%d %H:%M:%S UTC')
+        timestamp = int(datetime.strptime(date, '%b %d, %Y, %I:%M:%S %p').timestamp())
+        # date_utc = datetime.strptime(date, '%b %d, %Y, %I:%M:%S %p').astimezone(timezone.utc)
+        # str_date_utc = datetime.strftime(date_utc, '%Y-%m-%d %H:%M:%S UTC')
 
         a = post_info.select('.post_by_account a')[0]
         username = a.get_text()
-        user_url = f'{POE_URL}{a["href"]}'
+        # user_url = f'{POE_URL}{a["href"]}'
 
         post_url = f'{POE_FORUM_URL}{FORUM_THREAD_ID}/page/{current_page}#{post_id}'
 
@@ -104,9 +105,9 @@ def process_page(soup, current_page, last_post_id):
             text = text[:1000] + '... (more)'
 
         message = '~~**                                                                                                                     **~~\n'
-        message += f'**Date**: {str_date_utc}\n'
-        message += f'**Post**: <{post_url}>\n'
-        message += f'**User**: `{username}` ||<{user_url}>||\n'
+        message += f'<{post_url}>\n'
+        message += f'**Date**: <t:{timestamp}:F>\n'
+        message += f'**User**: `{username}`\n'
         message += f'**Message**:\n{text}\n'
         # message += f'**Avatar**: {avatar_url}\n'
 
